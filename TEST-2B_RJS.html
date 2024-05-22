@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>!Dinner Booking!</title>
+    <style>
+        .error {
+            background-color: rgb(255, 217, 0);
+        }
+        .no-error {
+            background-color: white;
+        }
+        .error-message {
+            color: rgb(255, 0, 0);
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome To Booking Platform For Your Dinner!</h1>
+    <br>
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name">
+    <span id="nameError" class="error-message"></span>
+    <br><br>
+    <label for="phone">Phone:</label>
+    <input type="text" id="phone" name="phone">
+    <span id="phoneError" class="error-message"></span>
+    <br><br>
+    <h1>Select your Time</h1>
+    <input type="radio" id="time1" name="time" value="5:00 pm" checked>
+    <label for="timea">5:00 pm</label><br>
+    <input type="radio" id="time2" name="time" value="6:00 pm">
+    <label for="timeb">6:00 pm</label><br>
+    <input type="radio" id="time3" name="time" value="7:00 pm">
+    <label for="timec">7:00 pm</label><br>
+    <input type="radio" id="time4" name="time" value="8:00 pm">
+    <label for="timed">8:00 pm</label>
+    <br><br>
+    <h1>What would you like to have with us?</h1>
+    <input type="checkbox" id="Starters" name="Dinner" value="Starters">
+    <label for="Starters">Starters</label><br>
+    <input type="checkbox" id="MainCourse" name="Dinner" value="Main Course">
+    <label for="MainCourse">Main Course</label><br>
+    <input type="checkbox" id="Desserts" name="Dinner" value="Desserts">
+    <label for="Desserts">Desserts</label><br>
+    <input type="checkbox" id="Drinks" name="Dinner" value="Drinks">
+    <label for="Drinks">Drinks</label><br>
+    <br><br>
+    <button id="submitBtn" onclick="Details()" disabled>Submit</button>
+    <span id="message"></span>
+    <p id="result"></p>
+    <script>
+        document.getElementById("name").addEventListener("blur", validateName);
+        document.getElementById("phone").addEventListener("blur", validatePhone);
+
+        function validateName() {
+            var name = document.getElementById("name").value.trim();
+            var nameError = document.getElementById("nameError");
+            var nameField = document.getElementById("name");
+
+            if (!name) {
+                nameError.innerText = "Error: Name is empty.";
+                nameField.classList.add("error");
+                nameField.classList.remove("no-error");
+                validateForm();
+                return;
+            }
+
+            if (!name.includes(' ')) {
+                nameError.innerText = "Error: First and last names are required.";
+                nameField.classList.add("error");
+                nameField.classList.remove("no-error");
+                validateForm();
+                return;
+            }
+
+            nameError.innerText = "";
+            nameField.classList.add("no-error");
+            nameField.classList.remove("error");
+            validateForm();
+        }
+
+        function validatePhone() {
+            var phone = document.getElementById("phone").value.trim();
+            var phoneError = document.getElementById("phoneError");
+            var phoneField = document.getElementById("phone");
+
+            if (!phone) {
+                phoneError.innerText = "Error: Phone number is empty.";
+                phoneField.classList.add("error");
+                phoneField.classList.remove("no-error");
+                validateForm();
+                return;
+            }
+
+            if (phone.length !== 6) {
+                phoneError.innerText = "Error: Phone numbers must have exactly 6 characters.";
+                phoneField.classList.add("error");
+                phoneField.classList.remove("no-error");
+                validateForm();
+                return;
+            }
+
+            if (!/^\d/.test(phone)) {
+                phoneError.innerText = "Error: Phone number must start with a number.";
+                phoneField.classList.add("error");
+                phoneField.classList.remove("no-error");
+                validateForm();
+                return;
+            }
+
+            phoneError.innerText = "";
+            phoneField.classList.add("no-error");
+            phoneField.classList.remove("error");
+            validateForm();
+        }
+
+        function validateForm() {
+            var name = document.getElementById("name").value.trim();
+            var phone = document.getElementById("phone").value.trim();
+            var submitBtn = document.getElementById("submitBtn");
+
+            if (name && name.includes(' ') && phone && phone.length === 6 && /^\d/.test(phone)) {
+                submitBtn.disabled = false;
+                document.getElementById("message").innerText = "";
+            } else {
+                submitBtn.disabled = true;
+                document.getElementById("message").innerText = "Please correct the errors above.";
+            }
+        }
+
+        function Details() {
+            var name = document.getElementById("name").value.trim();
+            var time = document.querySelector('input[name="time"]:checked').value;
+            var dinner = document.querySelectorAll('input[name="Dinner"]:checked');
+            
+            var selectedDinner = [];
+            dinner.forEach((item) => {
+                selectedDinner.push(item.value);
+            });
+
+            var result = name + ", Your Reservation at  " + time +" is successfull !!"+ " Dinner Type: " + (selectedDinner.length > 0 ? selectedDinner.join(", ") : "None");
+
+            document.getElementById("result").innerText = result;
+        }
+    </script>
+</body>
+</html>
